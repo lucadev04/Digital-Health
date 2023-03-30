@@ -1,0 +1,63 @@
+object Form1: TForm1
+  Left = 305
+  Height = 713
+  Top = 40
+  Width = 1241
+  Caption = 'Digital health'
+  ClientHeight = 713
+  ClientWidth = 1241
+  DesignTimePPI = 120
+  OnCreate = FormCreate
+  object btnsetup: TBitBtn
+    Left = 1096
+    Height = 38
+    Top = 8
+    Width = 142
+    Caption = 'Einstellungen'
+    OnClick = btnsetupClick
+    TabOrder = 0
+  end
+  object lbluptime: TLabel
+    Left = 520
+    Height = 48
+    Top = 288
+    Width = 175
+    Caption = '0000000'
+    Font.Height = -40
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object lbldauer: TLabel
+    Left = 496
+    Height = 20
+    Top = 256
+    Width = 234
+    Caption = 'heutige Gerätenutzungsdauer:'
+    ParentColor = False
+  end
+  object lbldauer2: TLabel
+    Left = 517
+    Height = 20
+    Top = 384
+    Width = 178
+    Caption = 'noch verbleibende Zeit:'
+    ParentColor = False
+  end
+  object lblresttime: TLabel
+    Left = 520
+    Height = 48
+    Top = 440
+    Width = 175
+    Caption = '0000000'
+    Font.Height = -40
+    Font.Name = 'Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object update_timer: TTimer
+    OnTimer = FormCreate
+    Left = 337
+    Top = 296
+  end
+end
