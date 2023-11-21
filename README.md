@@ -6,4 +6,4 @@ your app usage
 
 
 ## State of the Applciation:
-It is in a early state yet
+It is in a very early state yet
