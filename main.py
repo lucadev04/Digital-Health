@@ -1,19 +1,19 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QApplication, QMainWindow
 from PyQt6.QtCore import QTimer
-from PyQt6.uic import loadUi  # Import loadUi from PyQt6.uic
+from PyQt6.uic import loadUi
+import qdarktheme
 
 import psutil
 import datetime
 import sys
 
-class mainscreen(QtWidgets.QWidget):  # Inherit from QWidget
+class mainscreen(QtWidgets.QWidget):
     def __init__(self, parent=None):
-        super().__init__(parent)  # Call the base class constructor
-        self = loadUi("/home/luca/Luca/Privat/Python/digitalhealth/GUI/mainscreen.ui", self)  # Load UI file
+        super().__init__(parent)
+        self = loadUi("GUI/mainscreen.ui", self)  # Load UI file
 
 
-        # Connect the timer to the update function
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.uptime)
         self.timer.start(1000)
@@ -31,6 +31,7 @@ class mainscreen(QtWidgets.QWidget):  # Inherit from QWidget
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    qdarktheme.setup_theme()
     w = mainscreen()
     w.show()
     sys.exit(app.exec())
