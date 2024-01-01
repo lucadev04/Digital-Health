@@ -17,7 +17,7 @@ def date_formatter():
 def create_table():
     try:
         formated_date = date_formatter()
-        db = sqlite3.connect("digitalhealth.db")
+        db = sqlite3.connect("../digitalhealth.db")
         command = """CREATE TABLE IF NOT EXISTS """+formated_date+"""(appname TEXT PRIMARY KEY,
                                                                 usetime INTEGER,
                                                                 max_usage INTEGER);"""
@@ -32,7 +32,7 @@ def create_table():
 def insert_data(appname, usetime, max_usage):
     try:
         formated_date = date_formatter()
-        db = sqlite3.connect("digitalhealth.db")
+        db = sqlite3.connect("../digitalhealth.db")
         command = """INSERT INTO """+formated_date+"""(appname, usetime, max_usage) VALUES(?,?,?)"""
         c = db.cursor()
         c.execute(command, (appname, usetime, max_usage))
@@ -46,7 +46,7 @@ def insert_data(appname, usetime, max_usage):
 def update_data(usetime, appname):
     try:
         formated_date = date_formatter()
-        db = sqlite3.connect("digitalhealth.db")
+        db = sqlite3.connect("../digitalhealth.db")
         command = """UPDATE """+formated_date+""" SET usetime = ? WHERE appname = ?"""
         c = db.cursor()
         c.execute(command, (usetime, appname))
@@ -60,7 +60,7 @@ def update_data(usetime, appname):
 def get_apps():
     try:
         formatted_date = date_formatter()
-        db = sqlite3.connect('digitalhealth.db')
+        db = sqlite3.connect('../digitalhealth.db')
         command = """SELECT appname FROM """+formatted_date
         c = db.cursor()
         c.execute(command)
@@ -74,7 +74,7 @@ def get_apps():
 def get_usetime(appname):
     try:
         formatted_date = date_formatter()
-        db = sqlite3.connect('digitalhealth.db')
+        db = sqlite3.connect('../digitalhealth.db')
         command = """SELECT usetime FROM """+formatted_date+""" WHERE appname = ?"""
         c = db.cursor()
         c.execute(command, (appname,))
