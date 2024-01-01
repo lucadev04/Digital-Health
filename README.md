@@ -7,3 +7,8 @@ your app usage
 
 ## State of the Applciation:
 It is in a very early state yet
+
+
+## How it works:
+Digital-Health gets the actual active window and updates every it every 10 seconds.
+The result will be safted in a sqlite3 Database
