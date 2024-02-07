@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
+import json
 
 
 def date_formatter():
@@ -98,13 +99,32 @@ def get_active_app():
     window.change_attributes(event_mask=X.FocusChangeMask)
 
     try:
-        app_name = window.get_full_property(disp.intern_atom('WM_CLASS'), 0).value
+        appname = str(window.get_full_property(disp.intern_atom('WM_CLASS'), 0).value)
     except UnicodeDecodeError:
-        app_name = b""
+        appname = b""
 
-    return app_name
+    return appname
+
+def get_value(name):
+    with open("ids.json", "r") as f:
+        data = json.load(f)
+        return data[name]
+
+def generate_id(appname):
+    id = ""
+    splitedname = appname.split("'")[1][:4]
+    for letter in splitedname:
+        with open("ids.json", "r") as f:
+            data = json.load(f)
+        for l in data:
+            if l == letter:
+                id += get_value(l)
+    return id
 
 
+
+
+print(generate_id(get_active_app()))
 create_table()
 # print the name of the active window all 10 seconds and safes the app and usetime into a database
 while True:
