@@ -129,7 +129,7 @@ def generate_id(appname):
             if l == letter:
                 id += get_value(l)
     return int(id)
-
+ede
 
 
 create_table()
