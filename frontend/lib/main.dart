@@ -1,7 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:digital_health/dashpage.dart';
+import 'package:window_size/window_size.dart';
+import 'package:flutter/foundation.dart';
+
+const double windowWidth = 1280;
+const double windowHeight = 768;
+
+void setupWindow() {
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+    WidgetsFlutterBinding.ensureInitialized();
+    setWindowTitle('Digital Health');
+    setWindowMinSize(const Size(100, 100));
+    getCurrentScreen().then((screen) {
+      setWindowFrame(Rect.fromCenter(
+        center: screen!.frame.center,
+        width: windowWidth,
+        height: windowHeight,
+      ));
+    });
+  }
+}
+
+void debugPrintSynchronouslyWithText(String? message, String version,
+    {int? wrapWidth}) {
+  message = "[${DateTime.now()} - $version]: $message";
+  debugPrintSynchronously(message, wrapWidth: wrapWidth);
+}
 
 void main() {
+  setupWindow(); //Only used in Desktop App
   runApp(const MyApp());
 }
 
@@ -47,14 +76,14 @@ class MyHomePage extends StatelessWidget {
               ],
               selectedIndex: 0,
               onDestinationSelected: (value) {
-                print('selected: $value');
+                debugPrint('selected: $value');
               },
             ),
           ),
           Expanded(
             child: Container(
             color: Theme.of(context).colorScheme.primaryContainer,
-            child: DashPage(),
+            child: const DashPage(),
             ),
           ),
         ],
