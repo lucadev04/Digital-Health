@@ -12,6 +12,12 @@ def date_formatter():
     month = date.split('-')[1]
     day = date.split('-')[2]
     formated_date = "t" + year + month + day
+    with open("/home/luca/Luca/Privat/Python/digitalhealth/config.json", "r") as f:
+        data = json.load(f)
+        data["Date"] = formated_date
+        data2 = json.dumps(data, indent=1)
+    with open("/home/luca/Luca/Privat/Python/digitalhealth/config.json", "w") as f2:
+        f2.write(data2)
     return formated_date
 
 
@@ -129,7 +135,6 @@ def generate_id(appname):
             if l == letter:
                 id += get_value(l)
     return int(id)
-ede
 
 
 create_table()
