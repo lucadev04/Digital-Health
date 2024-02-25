@@ -1,10 +1,25 @@
 from Xlib import X, display
-import time
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
 import json
+import os
 
+
+
+def create_config():
+    file_exist = os.path.isfile("/home/luca/Luca/Privat/Python/digitalhealth/config.json")
+    if file_exist == False:
+        data = {
+            "Theme": "dark",
+            "Date": "lol",
+        }
+        jsondata = json.dumps(data, indent=2)
+        with open("/home/luca/Luca/Privat/Python/digitalhealth/config.json", "w") as f:
+            f.write(jsondata)
+    else:
+        print("config exists")
+        return
 
 def date_formatter():
     date = str(datetime.today()).split(' ')[0]
@@ -137,28 +152,6 @@ def generate_id(appname):
     return int(id)
 
 
-create_table()
-apps = get_apps()
-# print the name of the active window all 10 seconds and safes the app and usetime into a database
-while True:
-    active_app = get_active_app()
-    active_app_id = generate_id(get_active_app())
-    print("active application:", active_app_id)
-    apps = get_apps()
-    print(apps)
-    for n in apps:
-        print(n)
-        print(active_app_id)
-        if n == active_app_id:
-            usetime_old = get_usetime(n)
-            usetime_new = 10
-            usetime = int(usetime_old[0])+usetime_new
-            update_data(usetime, n)
-            print("yes")
-        else:
-            insert_data(active_app_id, active_app, 10, 0)
-            print("no")
-    time.sleep(10)
 
 
 
