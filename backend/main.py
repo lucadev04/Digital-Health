@@ -1,4 +1,5 @@
 import app_usage as au
+import active_window as aw
 import config
 import time
 
@@ -6,9 +7,10 @@ import time
 if __name__ == '__main__':
     config.create_config()
     au.create_table()
+    au.insert_data(0000, "test", 0, 0)
     while True:
-        active_app = au.get_active_app()
-        active_app_id = au.generate_id(au.get_active_app())
+        active_app = aw.get_active_app()
+        active_app_id = au.generate_id(aw.get_active_app())
         print("active application:", active_app_id)
         apps = au.get_apps()
         print(apps)
