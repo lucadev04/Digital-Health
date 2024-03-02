@@ -1,8 +1,8 @@
-from Xlib import X, display
 from datetime import datetime
 import sqlite3
 from sqlite3 import Error
 import json
+
 
 def date_formatter():
     date = str(datetime.today()).split(' ')[0]
@@ -98,23 +98,6 @@ def get_usetime(appid):
         print(e)
     finally:
         db.close()
-
-
-#gets the window which is active and returns the applicationname
-def get_active_app():
-    disp = display.Display()
-    root = disp.screen().root
-    window_id = root.get_full_property(disp.intern_atom('_NET_ACTIVE_WINDOW'), 0).value[0]
-
-    window = disp.create_resource_object('window', window_id)
-    window.change_attributes(event_mask=X.FocusChangeMask)
-
-    try:
-        appname = str(window.get_full_property(disp.intern_atom('WM_CLASS'), 0).value)
-    except UnicodeDecodeError:
-        appname = b""
-
-    return appname
 
 
 def get_value(name):
