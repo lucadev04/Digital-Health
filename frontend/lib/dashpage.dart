@@ -1,11 +1,27 @@
+import 'dart:io';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:sqlite3/sqlite3.dart';
+import 'package:path/path.dart' as p;
 
+class GetData{
+  String get_date(){
+    var filePath = p.join('/home/luca/Luca/Privat/Python/digitalhealth', 'config.json');
+    File file = File(filePath);
+    var fileContent = file.readAsStringSync();
+    var data = jsonDecode(fileContent);
+    return data['Date'];
+  }
+  void read_database(){
 
-//https://github.com/imaNNeo/fl_chart/issues/353
+  }
+}
 
 class DashPage extends StatelessWidget {
   const DashPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +33,13 @@ class DashPage extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
-          children: const [
+          children:[
             Card(
               child: UsetimeWidget(),
             ),
-            Card(),
+            Card(
+              child: Text(GetData().get_date()),
+            ),
             Card()
           ],
         );
@@ -38,50 +56,16 @@ class UsetimeWidget extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(16),
         child: LayoutBuilder(builder: (context, constraints) {
-          final shortestSide = constraints.smallest.shortestSide;
           return PieChart(PieChartData(
-              centerSpaceRadius: 8,
+              centerSpaceRadius: double.nan,
               borderData: FlBorderData(show: false),
               sectionsSpace: 2,
               sections: [
-                PieChartSectionData(
-                    value: 35, color: Colors.blue, radius: shortestSide / 2),
-                PieChartSectionData(
-                    value: 40, color: Colors.orange, radius: shortestSide / 2),
+                PieChartSectionData(value: 35, color: Colors.blue),
+                PieChartSectionData(value: 40, color: Colors.orange),
                 PieChartSectionData(value: 55, color: Colors.red),
                 PieChartSectionData(value: 70, color: Colors.purple),
               ]));
         }));
   }
 }
-
-/*
- return Padding(
-        padding: const EdgeInsets.all(16),
-        child: PieChart(PieChartData(
-            centerSpaceRadius: double.nan,
-            borderData: FlBorderData(show: false),
-            sectionsSpace: 2,
-            sections: [
-              PieChartSectionData(value: 35, color: Colors.blue),
-              PieChartSectionData(value: 40, color: Colors.orange),
-              PieChartSectionData(value: 55, color: Colors.red),
-              PieChartSectionData(value: 70, color: Colors.purple),
-            ])));
-  }
-*/
-/*child: LayoutBuilder (
-          builder: (context, constraints) {
-            final shortestSide = constraints.biggest.shortestSide;
-            return PieChart(PieChartData(
-            centerSpaceRadius: shortestSide / 2,
-            borderData: FlBorderData(show: false),
-            sectionsSpace: 2,
-            sections: [
-              PieChartSectionData(value: 35, color: Colors.blue, radius:  shortestSide / 2 - 16),
-              PieChartSectionData(value: 40, color: Colors.orange),
-              PieChartSectionData(value: 55, color: Colors.red),
-              PieChartSectionData(value: 70, color: Colors.purple),
-            ]));
-          }
-        )*/
