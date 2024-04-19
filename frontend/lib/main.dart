@@ -83,7 +83,7 @@ class MyHomePage extends StatelessWidget {
           Expanded(
             child: Container(
             color: Theme.of(context).colorScheme.primaryContainer,
-            child: DashPage(),
+            child: const DashPage(),
             ),
           ),
         ],

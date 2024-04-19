@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:sqlite3/common.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:path/path.dart' as p;
 
@@ -14,18 +15,15 @@ class GetData{
     var data = jsonDecode(fileContent);
     return data['Date'];
   }
-  String readDatabase(){
+   List<String> readDatabase(){
     final db = sqlite.sqlite3.open('/home/luca/Luca/Privat/Python/digitalhealth/digitalhealth.db');
-    final sqlite.ResultSet usetimes = db.select('SELECT * FROM '+getDate());
-    var apps = Map<String, String>();
+    final sqlite.ResultSet usetimes = db.select('SELECT * FROM ${getDate()}');
+    var usetimeList = <String>{};
     for (final sqlite.Row row in usetimes) {
-      var appname = row['appname'];
       var usetime = row['usetime'].toString();
-      apps[appname] = usetime;
+      usetimeList.add(usetime);
     }
-    var nemo = apps.values.toList();
-    var nemo2 = nemo[2];
-    return nemo2;
+    return usetimeList.toList();
   }
 }
 
@@ -44,13 +42,11 @@ class DashPage extends StatelessWidget {
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           children:[
-            Card(
+            const Card(
               child: UsetimeWidget(),
             ),
-            Card(
-              child: Text(GetData().readDatabase()),
-            ),
-            Card()
+            const Card(),
+            const Card()
           ],
         );
       }),
@@ -70,12 +66,19 @@ class UsetimeWidget extends StatelessWidget {
               centerSpaceRadius: double.nan,
               borderData: FlBorderData(show: false),
               sectionsSpace: 2,
-              sections: [
-                PieChartSectionData(value: 35, color: Colors.blue),
-                PieChartSectionData(value: 40, color: Colors.orange),
-                PieChartSectionData(value: 55, color: Colors.red),
-                PieChartSectionData(value: 70, color: Colors.purple),
-              ]));
+              sections: piechartSection(),
+          ));
         }));
   }
+  List<PieChartSectionData> piechartSection() {
+    var length = GetData().readDatabase().length;
+    var value = GetData().readDatabase();
+    var i = 0;
+    return List.generate(
+        length,
+            (i) {
+              return PieChartSectionData(value: double.parse(value[i+1]),);
+            },
+    );
+  }// List.generate
 }
