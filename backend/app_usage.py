@@ -23,8 +23,7 @@ def create_table():
     try:
         formated_date = date_formatter()
         db = sqlite3.connect("../digitalhealth.db")
-        command = """CREATE TABLE IF NOT EXISTS """+formated_date+""" (appid INTEGER PRIMARY KEY,
-                                                                appname TEXT,
+        command = """CREATE TABLE IF NOT EXISTS """+formated_date+""" (appname TEXT PRIMARY KEY,
                                                                 usetime INTEGER,
                                                                 max_usage INTEGER);"""
         c = db.cursor()
@@ -35,13 +34,13 @@ def create_table():
         db.close()
 
 
-def insert_data(appid, appname, usetime, max_usage):
+def insert_data(appname, usetime, max_usage):
     try:
         formated_date = date_formatter()
         db = sqlite3.connect("../digitalhealth.db")
-        command = """INSERT INTO """+formated_date+""" (appid, appname, usetime, max_usage) VALUES(?,?,?,?)"""
+        command = """INSERT INTO """+formated_date+""" (appname, usetime, max_usage) VALUES(?,?,?)"""
         c = db.cursor()
-        c.execute(command, (appid, appname, usetime, max_usage))
+        c.execute(command, (appname, usetime, max_usage))
         db.commit()
     except Error as e:
         print(e)
@@ -49,13 +48,13 @@ def insert_data(appid, appname, usetime, max_usage):
         db.close()
 
 
-def update_data(usetime, appid):
+def update_data(usetime, appname):
     try:
         formated_date = date_formatter()
         db = sqlite3.connect("../digitalhealth.db")
-        command = """UPDATE """+formated_date+""" SET usetime = ? WHERE appid = ?"""
+        command = """UPDATE """+formated_date+""" SET usetime = ? WHERE appname = ?"""
         c = db.cursor()
-        c.execute(command, (usetime, appid))
+        c.execute(command, (usetime, appname))
         db.commit()
     except Error as e:
         print(e)
@@ -67,7 +66,7 @@ def get_apps():
     try:
         formatted_date = date_formatter()
         db = sqlite3.connect('../digitalhealth.db')
-        command = """SELECT appid FROM """ + formatted_date
+        command = """SELECT appname FROM """ + formatted_date
         c = db.cursor()
         c.execute(command)
         applist = []
@@ -84,13 +83,13 @@ def get_apps():
 
 
 
-def get_usetime(appid):
+def get_usetime(appname):
     try:
         formatted_date = date_formatter()
         db = sqlite3.connect('../digitalhealth.db')
-        command = """SELECT usetime FROM """+formatted_date+""" WHERE appid = ?"""
+        command = """SELECT usetime FROM """+formatted_date+""" WHERE appname = ?"""
         c = db.cursor()
-        c.execute(command, (appid,))
+        c.execute(command, (appname,))
         usetime = c.fetchone()
         print(usetime)
         return usetime
@@ -108,7 +107,7 @@ def get_value(name):
 
 def generate_id(appname):
     id = ""
-    splitedname = appname.split("'")[1][:4]
+    splitedname = str(appname).split("'")[1][:4]
     for letter in splitedname:
         with open("ids.json", "r") as f:
             data = json.load(f)

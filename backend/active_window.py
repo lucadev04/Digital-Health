@@ -10,8 +10,12 @@ def get_active_app():
     window.change_attributes(event_mask=X.FocusChangeMask)
 
     try:
-        appname = str(window.get_full_property(disp.intern_atom('WM_CLASS'), 0).value)
+        appname = window.get_full_property(disp.intern_atom('WM_CLASS'), 0).value
+        appname = appname.decode('utf-8', errors='ignore')
+        appname_new = appname.replace('\x00', '/')
+
     except UnicodeDecodeError:
         appname = b""
 
-    return appname
+    return(str(appname_new).split('/')[0])
+
