@@ -53,8 +53,26 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const DashPage(),
+    const Placeholder(),
+  ];
+
+  void _onDestinationSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,16 +92,14 @@ class MyHomePage extends StatelessWidget {
                   label: Text('Settings'),
                 ),
               ],
-              selectedIndex: 0,
-              onDestinationSelected: (value) {
-                debugPrint('selected: $value');
-              },
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: _onDestinationSelected,
             ),
           ),
           Expanded(
             child: Container(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            child: const DashPage(),
+              color: Theme.of(context).colorScheme.primaryContainer,
+              child: _pages[_selectedIndex],
             ),
           ),
         ],

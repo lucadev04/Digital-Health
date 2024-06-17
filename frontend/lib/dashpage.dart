@@ -73,11 +73,11 @@ class UsetimeWidget extends StatelessWidget {
   List<PieChartSectionData> piechartSection() {
     var length = GetData().readDatabase().length;
     var value = GetData().readDatabase();
-    var i = 0;
+    var colors = [Colors.blue, Colors.red, Colors.orange, Colors.green, Colors.purple, Colors.yellow];
     return List.generate(
         length,
             (i) {
-              return PieChartSectionData(value: double.parse(value[i+1]),);
+              return PieChartSectionData(value: double.parse(value[i]), color: colors[i]);
             },
     );
   }// List.generate
