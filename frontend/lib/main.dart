@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:digital_health/dashpage.dart';
+import 'package:digital_health/settings.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter/foundation.dart';
 
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Digital Health',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
       darkTheme: ThemeData.dark(),
@@ -65,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _pages = [
     const DashPage(),
-    const Placeholder(),
+    const Settings(),
   ];
 
   void _onDestinationSelected(int index) {
