@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:digital_health/dashpage.dart';
 import 'package:digital_health/settings.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart' as p;
 
 const double windowWidth = 1280;
 const double windowHeight = 768;
@@ -30,6 +32,14 @@ void debugPrintSynchronouslyWithText(String? message, String version,
   debugPrintSynchronously(message, wrapWidth: wrapWidth);
 }
 
+String getTheme(){
+  var filePath = p.join('/home/luca/Luca/Privat/Python/digitalhealth', 'config.json');
+  File file = File(filePath);
+  var fileContent = file.readAsStringSync();
+  var data = jsonDecode(fileContent);
+  return data['Theme'];
+}
+
 void main() {
   setupWindow(); //Only used in Desktop App
   runApp(const MyApp());
@@ -44,13 +54,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Digital Health',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
       darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.dark,
+      themeMode: changeTheme(),
       home: const MyHomePage(),
     );
+  }
+
+  changeTheme() {
+    var theme = getTheme();
+    switch(theme){
+      case "dark":
+        return ThemeMode.dark;
+      case "light":
+        return ThemeMode.light;
+    }
   }
 }
 

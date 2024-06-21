@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
+import 'package:digital_health/main.dart';
 
 class Settings extends StatelessWidget{
   const Settings({super.key});
@@ -21,7 +24,7 @@ class SettingsPage extends StatefulWidget{
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String selectedValue = "dark";
+  String selectedValue = getTheme();
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +48,13 @@ class _SettingsPageState extends State<SettingsPage> {
               onChanged: (String? newValue) {
                 setState(() {
                   selectedValue = newValue!;
+                  save();
                 });
               }),
           SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () => save(),
-            child: const Text('Save'),
-          )
         ],
       ),
     );
-  }
-  save() {
-    //TODO: save data in config.json
-    String theme = selectedValue;
   }
   List<DropdownMenuItem<String>> get dropdownItems{
     List<DropdownMenuItem<String>> menuItems = [
@@ -66,5 +62,16 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(child: Text("light"),value: "light"),
     ];
     return menuItems;
+  }
+
+  void save() {
+    var filePath = p.join('/home/luca/Luca/Privat/Python/digitalhealth', 'config.json');
+    File file = File(filePath);
+    var fileContent = file.readAsStringSync();
+    var data = jsonDecode(fileContent);
+    data['Theme'] = selectedValue;
+    var data2 = json.encode(data);
+    MyApp().changeTheme();
+    file.writeAsString(data2);
   }
 }
