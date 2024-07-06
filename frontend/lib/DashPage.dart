@@ -1,30 +1,6 @@
-import 'dart:io';
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:sqlite3/sqlite3.dart' as sqlite;
-import 'package:path/path.dart' as p;
 import 'package:digital_health/widgets/AppUsageWidget.dart';
 
-class GetData{
-  String getDate(){
-    var filePath = p.join('/home/luca/Luca/Privat/Python/digitalhealth', 'config.json');
-    File file = File(filePath);
-    var fileContent = file.readAsStringSync();
-    var data = jsonDecode(fileContent);
-    return data['Date'];
-  }
-   List<String> readDatabase(){
-    final db = sqlite.sqlite3.open('/home/luca/Luca/Privat/Python/digitalhealth/digitalhealth.db');
-    final sqlite.ResultSet usetimes = db.select('SELECT * FROM ${getDate()}');
-    var usetimeList = <String>{};
-    for (final sqlite.Row row in usetimes) {
-      var usetime = row['usetime'].toString();
-      usetimeList.add(usetime);
-    }
-    return usetimeList.toList();
-  }
-}
 
 class DashPage extends StatelessWidget {
   const DashPage({super.key});

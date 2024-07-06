@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:digital_health/dashpage.dart';
-import 'package:digital_health/settings.dart';
+import 'package:digital_health/DashPage.dart';
+import 'package:digital_health/SettingsPage.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
