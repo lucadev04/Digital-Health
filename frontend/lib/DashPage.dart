@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:path/path.dart' as p;
+import 'package:digital_health/widgets/AppUsageWidget.dart';
 
 class GetData{
   String getDate(){
@@ -42,7 +42,7 @@ class DashPage extends StatelessWidget {
           mainAxisSpacing: 16,
           children:[
             const Card(
-              child: UsetimeWidget(),
+              child: AppUsageWidget(),
             ),
             const Card(),
             const Card()
@@ -53,31 +53,3 @@ class DashPage extends StatelessWidget {
   }
 }
 
-class UsetimeWidget extends StatelessWidget {
-  const UsetimeWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(16),
-        child: LayoutBuilder(builder: (context, constraints) {
-          return PieChart(PieChartData(
-              centerSpaceRadius: double.nan,
-              borderData: FlBorderData(show: false),
-              sectionsSpace: 2,
-              sections: piechartSection(),
-          ));
-        }));
-  }
-  List<PieChartSectionData> piechartSection() {
-    var length = GetData().readDatabase().length;
-    var value = GetData().readDatabase();
-    var colors = [Colors.blue, Colors.red, Colors.orange, Colors.green, Colors.purple, Colors.yellow];
-    return List.generate(
-        length,
-            (i) {
-              return PieChartSectionData(value: double.parse(value[i]), color: colors[i]);
-            },
-    );
-  }// List.generate
-}
