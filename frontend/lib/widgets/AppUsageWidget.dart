@@ -73,8 +73,25 @@ class AppUsageWidget extends StatelessWidget {
 
   List<Widget> generateLegend() {
     var appnames = GetData().readAppName();
-    return appnames.map((appname) => Text(appname)).toList();
+    var colors = [Colors.blue, Colors.red, Colors.orange, Colors.green, Colors.purple, Colors.yellow];
+
+    return appnames.asMap().entries.map((entry) {
+      int index = entry.key;
+      String appname = entry.value;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        child: Row(
+          children: [
+            Icon(Icons.rectangle, color: colors[index % colors.length]),
+            const SizedBox(width: 8),  // Abstand zwischen Icon und Text
+            Text(appname),
+          ],
+        ),
+      );
+    }).toList();
   }
+
 
   List<PieChartSectionData> piechartSection() {
     var length = GetData().readUsetime().length;
