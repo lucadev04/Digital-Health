@@ -2,6 +2,7 @@ import app_usage as au
 import active_window as aw
 import config
 import time
+import asyncio
 
 
 if __name__ == '__main__':
