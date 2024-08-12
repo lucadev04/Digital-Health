@@ -4,6 +4,28 @@ from sqlite3 import Error
 import json
 
 
+#checks if a table is empty
+def table_checker(date):
+    try:
+        conn = sqlite3.connect('../digitalhealth.db')
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT COUNT(*) FROM '+date)
+        line_count = cursor.fetchone()[0]
+
+        if line_count == 0:
+            print('Table is empty.')
+            insert_data("test", 0, 0)
+        else:
+            print("table is already filled")
+
+    except Error as e:
+        print(e)
+    finally:
+        conn.close()
+
+
+#formates the date in a format that can be used in a sqlite table
 def date_formatter():
     date = str(datetime.today()).split(' ')[0]
     year = date.split('-')[0]
@@ -19,6 +41,7 @@ def date_formatter():
     return formated_date
 
 
+#creates the table for the app_usage times of the day
 def create_table():
     try:
         formated_date = date_formatter()
@@ -34,6 +57,7 @@ def create_table():
         db.close()
 
 
+# inserts an app if it doesn't exist already
 def insert_data(appname, usetime, max_usage):
     try:
         formated_date = date_formatter()
@@ -48,6 +72,7 @@ def insert_data(appname, usetime, max_usage):
         db.close()
 
 
+# updates the usetime of an already existing app
 def update_data(usetime, appname):
     try:
         formated_date = date_formatter()
@@ -62,6 +87,7 @@ def update_data(usetime, appname):
         db.close()
 
 
+# gets all apps from the table of the actual day
 def get_apps():
     try:
         formatted_date = date_formatter()
@@ -82,7 +108,7 @@ def get_apps():
         db.close()
 
 
-
+# gets the usetime of a specific app
 def get_usetime(appname):
     try:
         formatted_date = date_formatter()

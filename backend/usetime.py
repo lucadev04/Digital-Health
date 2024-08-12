@@ -3,11 +3,25 @@ import sqlite3
 from sqlite3 import Error
 
 
-def get_usetimes():
+# function for getting all usetimes from the database
+def get_app_usetimes():
     try:
         formatted_date = au.date_formatter()
         db = sqlite3.connect('../digitalhealth.db')
-        command = """SELECT usetime FROM """+formatted_date
+        command = """SELECT usetime FROM """ + formatted_date
+        c = db.cursor()
+        c.execute(command)
+        usetimes = c.fetchall()
+        return usetimes
+    except Error as e:
+        print(e)
+    finally:
+        db.close()
+
+def get_usetimes():
+    try:
+        db = sqlite3.connect('../digitalhealth.db')
+        command = """SELECT usetime FROM usetimes"""
         c = db.cursor()
         c.execute(command)
         usetimes = c.fetchall()
@@ -18,13 +32,16 @@ def get_usetimes():
         db.close()
 
 
+# adds all usetimes from get usetimes
 def calculate_usetime():
-    usetimes = get_usetimes()
+    usetimes = get_app_usetimes()
     usetime = 0
     for n in usetimes:
-        usetime+=int(n[0])
+        usetime += int(n[0])
     return usetime
 
+
+# creates the database table where all usetimes will be stored
 def create_usetime_table():
     try:
         formated_date = au.date_formatter()
@@ -39,6 +56,7 @@ def create_usetime_table():
         db.close()
 
 
+# inserts an usetime from a day into the table if it doesn't exist already
 def insert_usetime(usetime):
     try:
         date = au.date_formatter()
@@ -53,6 +71,7 @@ def insert_usetime(usetime):
         db.close()
 
 
+# updates an existing usetime
 def update_usetime(usetime):
     try:
         date = au.date_formatter()
