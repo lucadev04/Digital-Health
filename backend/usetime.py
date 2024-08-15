@@ -18,10 +18,10 @@ def get_app_usetimes():
     finally:
         db.close()
 
-def get_usetimes():
+def get_dates():
     try:
         db = sqlite3.connect('../digitalhealth.db')
-        command = """SELECT usetime FROM usetimes"""
+        command = """SELECT date FROM usetimes"""
         c = db.cursor()
         c.execute(command)
         usetimes = c.fetchall()
@@ -41,13 +41,18 @@ def calculate_usetime():
     return usetime
 
 
+
+
+
 # creates the database table where all usetimes will be stored
 def create_usetime_table():
     try:
         formated_date = au.date_formatter()
         db = sqlite3.connect("../digitalhealth.db")
         command = """CREATE TABLE IF NOT EXISTS usetimes (date TEXT PRIMARY KEY,
-                                                                usetime INTEGER);"""
+                                                                usetime INTEGER,
+                                                                formatted_usetime TEXT,
+                                                                day TEXT);"""
         c = db.cursor()
         c.execute(command)
     except Error as e:
@@ -57,13 +62,12 @@ def create_usetime_table():
 
 
 # inserts an usetime from a day into the table if it doesn't exist already
-def insert_usetime(usetime):
+def insert_usetime(date, usetime, day, formatted_usetime):
     try:
-        date = au.date_formatter()
         db = sqlite3.connect("../digitalhealth.db")
-        command = """INSERT INTO usetimes (date, usetime) VALUES(?,?)"""
+        command = """INSERT INTO usetimes (date, usetime, day, formatted_usetime) VALUES(?,?,?,?)"""
         c = db.cursor()
-        c.execute(command, (date, usetime))
+        c.execute(command, (date, usetime, day, formatted_usetime))
         db.commit()
     except Error as e:
         print(e)
@@ -72,14 +76,33 @@ def insert_usetime(usetime):
 
 
 # updates an existing usetime
-def update_usetime(usetime):
+def update_usetime(date, usetime, formatted_usetime):
     try:
-        date = au.date_formatter()
         db = sqlite3.connect("../digitalhealth.db")
-        command = """UPDATE usetimes SET usetime = ? WHERE date = ?"""
+        command = """UPDATE usetimes SET usetime = ?, formatted_usetime = ? WHERE date = ?"""
         c = db.cursor()
-        c.execute(command, (usetime, date))
+        c.execute(command, (usetime, formatted_usetime, date))
         db.commit()
+    except Error as e:
+        print(e)
+    finally:
+        db.close()
+
+
+def table_checker():
+    try:
+        db = sqlite3.connect('../digitalhealth.db')
+        cursor = db.cursor()
+
+        cursor.execute('SELECT COUNT(*) FROM usetimes')
+        line_count = cursor.fetchone()[0]
+
+        if line_count == 0:
+            print('Table is empty.')
+            insert_usetime("test", 0, "test", "test")
+        else:
+            print("table is already filled")
+
     except Error as e:
         print(e)
     finally:

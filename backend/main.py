@@ -3,6 +3,7 @@ import active_window as aw
 import usetime as us
 import config
 import asyncio
+import datetime
 
 
 if __name__ == '__main__':
@@ -31,13 +32,23 @@ if __name__ == '__main__':
             await asyncio.sleep(10)
 
     async def usetime():
-        #TODO: check if usetime already exist
-        us.create_usetime_table()
-        usetime = us.calculate_usetime()
-
-        us.insert_usetime(usetime)
-        print("dies ist ein test")
-        await asyncio.sleep(10)
+        while True:
+            us.create_usetime_table()
+            us.table_checker()
+            usetime = us.calculate_usetime()
+            formatted_usetime = str(datetime.timedelta(seconds=usetime))
+            day = datetime.date.today().strftime('%A')
+            date = au.date_formatter()
+            dates = us.get_dates()
+            for n in dates:
+                print(n[0])
+                if date == n[0]:
+                    us.update_usetime(date, usetime, formatted_usetime)
+                    print("date")
+                else:
+                    us.insert_usetime(date, usetime, day, formatted_usetime)
+                    print("not date")
+            await asyncio.sleep(10)
 
 
     async def main():

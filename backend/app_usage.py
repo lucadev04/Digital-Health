@@ -7,8 +7,8 @@ import json
 #checks if a table is empty
 def table_checker(date):
     try:
-        conn = sqlite3.connect('../digitalhealth.db')
-        cursor = conn.cursor()
+        db = sqlite3.connect('../digitalhealth.db')
+        cursor = db.cursor()
 
         cursor.execute('SELECT COUNT(*) FROM '+date)
         line_count = cursor.fetchone()[0]
@@ -22,7 +22,7 @@ def table_checker(date):
     except Error as e:
         print(e)
     finally:
-        conn.close()
+        db.close()
 
 
 #formates the date in a format that can be used in a sqlite table
