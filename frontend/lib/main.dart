@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:digital_health/DashPage.dart';
 import 'package:digital_health/SettingsPage.dart';
+import 'package:digital_health/AppsPage.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
@@ -87,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     const DashPage(),
     const Settings(),
+    const AppsPage(),
   ];
 
   void _onDestinationSelected(int index) {
@@ -102,15 +104,35 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           SafeArea(
             child: NavigationRail(
-              extended: true,
-              destinations: const [
+              extended: false,
+              labelType: NavigationRailLabelType.none,
+              destinations: const[
                 NavigationRailDestination(
-                  icon: Icon(Icons.dashboard),
+                  icon: Tooltip(
+                    message: 'Dashboard',
+                    verticalOffset: -13,
+                    margin:EdgeInsets.only(left: 60),
+                    child: Icon(Icons.dashboard),
+                  ),
                   label: Text('Dashboard'),
                 ),
                 NavigationRailDestination(
-                  icon: Icon(Icons.settings),
+                  icon: Tooltip(
+                    message: 'Settings',
+                    verticalOffset: -13,
+                    margin:EdgeInsets.only(left: 60),
+                    child: Icon(Icons.settings),
+                  ),
                   label: Text('Settings'),
+                ),
+                NavigationRailDestination(
+                  icon: Tooltip(
+                    message: 'Apps',
+                    verticalOffset: -13,
+                    margin:EdgeInsets.only(left: 60),
+                    child: Icon(Icons.apps),
+                  ),
+                  label: Text('Apps'),
                 ),
               ],
               selectedIndex: _selectedIndex,
@@ -119,7 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
               child: _pages[_selectedIndex],
             ),
           ),

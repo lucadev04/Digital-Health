@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:digital_health/widgets/AppUsageWidget.dart';
+import 'package:digital_health/widgets/UsetimeWidget.dart';
 
 
 class DashPage extends StatelessWidget {
@@ -20,7 +21,9 @@ class DashPage extends StatelessWidget {
             const Card(
               child: AppUsageWidget(),
             ),
-            const Card(),
+            const Card(
+              child: UsetimeWidget(),
+            ),
             const Card()
           ],
         );
