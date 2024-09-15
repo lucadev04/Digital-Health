@@ -7,6 +7,7 @@ import 'package:sqlite3/sqlite3.dart' as sqlite;
 import 'package:path/path.dart' as p;
 
 class GetData{
+  //here we save
   String getDate(){
     var filePath = p.join('/home/luca/Luca/Privat/Python/digitalhealth', 'config.json');
     File file = File(filePath);
@@ -14,25 +15,20 @@ class GetData{
     var data = jsonDecode(fileContent);
     return data['Date'];
   }
-  List<String> readUsetime(){
+
+  //here we save the appusage and the usetime in a list of maps
+  List<Map<String, String>> readAppUsageData(){
     final db = sqlite.sqlite3.open('/home/luca/Luca/Privat/Python/digitalhealth/digitalhealth.db');
-    final sqlite.ResultSet usetimes = db.select('SELECT * FROM ${getDate()}');
-    var usetimeList = <String>{};
-    for (final sqlite.Row row in usetimes) {
-      var usetime = row['usetime'].toString();
-      usetimeList.add(usetime);
+    final sqlite.ResultSet results = db.select('SELECT appname, usetime FROM ${getDate()}');
+
+    var appUsageData = <Map<String, String>>[];
+    for (final sqlite.Row row in results) {
+      appUsageData.add({
+        'appname': row['appname'].toString(),
+        'usetime': row['usetime'].toString(),
+      });
     }
-    return usetimeList.toList();
-  }
-  List<String> readAppName(){
-    final db = sqlite.sqlite3.open('/home/luca/Luca/Privat/Python/digitalhealth/digitalhealth.db');
-    final sqlite.ResultSet appnames = db.select('SELECT * FROM ${getDate()}');
-    var appnameList = <String>{};
-    for (final sqlite.Row row in appnames) {
-      var appname = row['appname'].toString();
-      appnameList.add(appname);
-    }
-    return appnameList.toList();
+    return appUsageData;
   }
 }
 
@@ -72,19 +68,19 @@ class AppUsageWidget extends StatelessWidget {
   }
 
   List<Widget> generateLegend() {
-    var appnames = GetData().readAppName();
-    var colors = [Colors.blue, Colors.red, Colors.orange, Colors.green, Colors.purple, Colors.yellow];
+    var appUsageData = GetData().readAppUsageData();
+    var colors = [Colors.blue, Colors.red, Colors.orange, Colors.green, Colors.purple, Colors.lightBlue, Colors.cyan, Colors.pink, Colors.lightGreen, Colors.deepOrange];
 
-    return appnames.asMap().entries.map((entry) {
+    return appUsageData.asMap().entries.map((entry) {
       int index = entry.key;
-      String appname = entry.value;
+      String appname = entry.value['appname']!;
 
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Row(
           children: [
             Icon(Icons.rectangle, color: colors[index % colors.length]),
-            const SizedBox(width: 8),  // Abstand zwischen Icon und Text
+            const SizedBox(width: 8),
             Text(appname),
           ],
         ),
@@ -92,16 +88,16 @@ class AppUsageWidget extends StatelessWidget {
     }).toList();
   }
 
-
   List<PieChartSectionData> piechartSection() {
-    var length = GetData().readUsetime().length;
-    var value = GetData().readUsetime();
-    var colors = [Colors.blue, Colors.red, Colors.orange, Colors.green, Colors.purple, Colors.yellow];
+    var appUsageData = GetData().readAppUsageData();
+    var colors = [Colors.blue, Colors.red, Colors.orange, Colors.green, Colors.purple, Colors.lightBlue, Colors.cyan, Colors.pink, Colors.lightGreen, Colors.deepOrange];
+
     return List.generate(
-      length,
+      appUsageData.length,
           (i) {
-        return PieChartSectionData(value: double.parse(value[i]), color: colors[i]);
+        double usetime = double.parse(appUsageData[i]['usetime']!);
+        return PieChartSectionData(value: usetime, color: colors[i % colors.length]);
       },
     );
-  }// List.generate
+  }
 }

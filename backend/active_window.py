@@ -1,3 +1,4 @@
+import Xlib.error
 from Xlib import X, display
 
 
@@ -14,8 +15,8 @@ def get_active_app():
         appname = appname.decode('utf-8', errors='ignore')
         appname_new = appname.replace('\x00', '/')
 
-    except UnicodeDecodeError:
-        appname = b""
+    except Xlib.error.BadWindow:
+        print("The following app triggered the BadWindow Error: "+appname_new)
 
     return(str(appname_new).split('/')[0])
 
