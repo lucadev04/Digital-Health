@@ -21,26 +21,24 @@ class UsetimeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(30),
         decoration: BoxDecoration(
           color: Colors.purple,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(50),
         ),
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min, // Minimiert den Platz, den die Column einnimmt
-              children: [
-                const Text(
-                  'Usetime:',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  getUsetime(), // Die Funktion, die die Usetime zurückgibt
-                  style: const TextStyle(fontSize: 60),
-                ),
-              ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Usetime:',
+              style: TextStyle(fontSize: 20),
             ),
-        )
+            Text(
+              getUsetime(),
+              style: const TextStyle(fontSize: 60),
+            ),
+          ],
+        ),
       )
     );
   }

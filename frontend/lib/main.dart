@@ -108,30 +108,15 @@ class _MyHomePageState extends State<MyHomePage> {
               labelType: NavigationRailLabelType.none,
               destinations: const[
                 NavigationRailDestination(
-                  icon: Tooltip(
-                    message: 'Dashboard',
-                    verticalOffset: -13,
-                    margin:EdgeInsets.only(left: 60),
-                    child: Icon(Icons.dashboard),
-                  ),
+                  icon: Icon(Icons.dashboard),
                   label: Text('Dashboard'),
                 ),
                 NavigationRailDestination(
-                  icon: Tooltip(
-                    message: 'Settings',
-                    verticalOffset: -13,
-                    margin:EdgeInsets.only(left: 60),
-                    child: Icon(Icons.settings),
-                  ),
+                  icon: Icon(Icons.settings),
                   label: Text('Settings'),
                 ),
                 NavigationRailDestination(
-                  icon: Tooltip(
-                    message: 'Apps',
-                    verticalOffset: -13,
-                    margin:EdgeInsets.only(left: 60),
-                    child: Icon(Icons.apps),
-                  ),
+                  icon: Icon(Icons.apps),
                   label: Text('Apps'),
                 ),
               ],

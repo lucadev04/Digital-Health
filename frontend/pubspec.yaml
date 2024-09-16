@@ -38,6 +38,7 @@ dependencies:
   fl_chart: ^0.65.0
   sqlite3: ^2.4.0
   path: ^1.8.3
+  sidebarx: ^0.17.1
 
 dev_dependencies:
   flutter_test:
