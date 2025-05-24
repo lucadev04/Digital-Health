@@ -11,6 +11,6 @@ your app usage
 
 
 ## How it works:
-Digital-Health gets the actual active window and updates every it every 10 seconds.
+Digital-Health gets the actual active window and updates it every 10 seconds.
 The daily usetime is calculated by all app usetimes.
 The result will be safted in a sqlite3 Database
